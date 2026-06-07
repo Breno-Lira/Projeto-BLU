@@ -10,7 +10,7 @@
 // ==============================================================
 // Mude para 'false' para enviar as fotos normalmente (Resolução original).
 // Mude para 'true' para rodar o teste de estresse de memória (AA).
-#define MODO_TESTE_AA false
+#define MODO_TESTE_AA true
 
 // ==============================================================
 //  CONFIGURAÇÃO — Wi-Fi e MQTT
@@ -105,7 +105,6 @@ bool initCamera()
 
     if (psramFound())
     {
-        // Força a alocação do buffer máximo na RAM para permitir o teste UXGA
         config.frame_size = FRAMESIZE_UXGA;
         config.jpeg_quality = 10;
         config.fb_count = 2;
@@ -138,14 +137,12 @@ bool initCamera()
     s->set_vflip(s, 1);
     s->set_hmirror(s, 1);
 
-    // ----------------============================================
-    // PROTEÇÃO: Se NÃO for o modo de teste, volta o sensor ao normal
-    // ----------------============================================
+    
     if (!MODO_TESTE_AA)
     {
         if (psramFound())
         {
-            s->set_framesize(s, FRAMESIZE_SVGA); // Devolve os 800x600 originais ao modo normal
+            s->set_framesize(s, FRAMESIZE_SVGA); 
             s->set_quality(s, 10);
             Serial.println("[CAM] MODO NORMAL ATIVO: Sensor reconfigurado para SVGA (800x600)");
         }
@@ -166,7 +163,7 @@ bool initCamera()
 void setup()
 {
     Serial.begin(115200);
-    Serial.setDebugOutput(true); // Seu padrão mantido
+    Serial.setDebugOutput(true); 
 
     Serial.println("\n\n=============================");
     Serial.println("   ESP32-CAM: WebServer + MQTT");
@@ -281,9 +278,9 @@ void vMqttCameraTask(void *pvParameters)
                     s->set_framesize(s, resolucoes[cenario]);
                     s->set_quality(s, qualidades[cenario]);
 
-                    vTaskDelay(pdMS_TO_TICKS(1500)); // Tempo para estabilização física do sensor
+                    vTaskDelay(pdMS_TO_TICKS(1500)); 
 
-                    // Limpeza de frames antigos acumulados na fila dupla (Flush)
+                    
                     for (int i = 0; i < 2; i++)
                     {
                         camera_fb_t *flush_fb = esp_camera_fb_get();
@@ -300,7 +297,7 @@ void vMqttCameraTask(void *pvParameters)
 
                     int tamanho_real_foto = fb->len;
 
-                    // Teto protetivo contra reinicialização por estouro de tempo (Watchdog)
+                    
                     int N = tamanho_real_foto;
                     if (N > 18000)
                     {
@@ -395,7 +392,7 @@ void vMqttCameraTask(void *pvParameters)
                     Serial.println("[MQTT-TASK] Foto enviada com sucesso!");
                     esp_camera_fb_return(fb);
                 }
-                vTaskDelay(pdMS_TO_TICKS(20000));
+                vTaskDelay(pdMS_TO_TICKS(50000));
             }
         }
         else
