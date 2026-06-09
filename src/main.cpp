@@ -10,7 +10,7 @@
 // ==============================================================
 // Mude para 'false' para enviar as fotos normalmente (Resolução original).
 // Mude para 'true' para rodar o teste de estresse de memória (AA).
-#define MODO_TESTE_AA true
+#define MODO_TESTE_AA false
 
 // ==============================================================
 //  CONFIGURAÇÃO — Wi-Fi e MQTT
@@ -135,7 +135,7 @@ bool initCamera()
     s->set_aec2(s, 0);
     s->set_gain_ctrl(s, 1);
     s->set_vflip(s, 1);
-    s->set_hmirror(s, 1);
+    s->set_hmirror(s, 0);
 
     
     if (!MODO_TESTE_AA)
