@@ -1,0 +1,26 @@
+[
+    {
+        "id": "3eb0093839c78104",
+        "type": "exec",
+        "z": "dad34e55f7f517a8",
+        "command": "",
+        "addpay": "payload",
+        "append": "",
+        "useSpawn": "false",
+        "timer": "",
+        "winHide": false,
+        "oldrc": false,
+        "name": "Executar script",
+        "x": 460,
+        "y": 280,
+        "wires": [
+            [
+                "1cde9a60e76698f8"
+            ],
+            [
+                "ec632164ca52eb21"
+            ],
+            []
+        ]
+    }
+]
